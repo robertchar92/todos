@@ -3,21 +3,14 @@ package http
 import (
 	"fmt"
 	"net/http"
-	"strconv"
-	"todo/utils/errors"
+	"todo/service/todo/delivery/http/request"
 	response_util "todo/utils/response_utils"
 
 	"github.com/gin-gonic/gin"
 )
 
-func (h *Handler) Delete(c *gin.Context) {
-	activityID, err := strconv.ParseUint(c.Param("id"), 10, 64)
-	if err != nil {
-		_ = c.Error(errors.ErrUnprocessableEntity).SetType(gin.ErrorTypePublic)
-		return
-	}
-
-	err = h.activityUsecase.Delete(activityID)
+func (h *Handler) Index(c *gin.Context) {
+	todos, todoPagination, err := h.todoUsecase.Index(request.NewTodoPaginationConfig(c.Request.URL.Query()))
 	if err != nil {
 		c.JSON(http.StatusNotFound, response_util.ErrorResponse{
 			Status:  http.StatusText(http.StatusNotFound),
@@ -26,8 +19,10 @@ func (h *Handler) Delete(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, response_util.ShowResponse{
+	c.JSON(http.StatusOK, response_util.IndexResponse{
 		Status:  "Success",
 		Message: "Success",
+		Data:    todos,
+		Meta:    todoPagination,
 	})
 }

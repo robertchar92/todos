@@ -3,16 +3,15 @@ package http
 import (
 	"fmt"
 	"net/http"
-	"strconv"
-	"todo/service/activity/delivery/http/request"
+	"todo/service/todo/delivery/http/request"
 	response_util "todo/utils/response_utils"
 
 	"github.com/gin-gonic/gin"
 )
 
-func (h *Handler) Update(c *gin.Context) {
-	activityID, err := strconv.ParseUint(c.Param("id"), 10, 64)
-	if err != nil {
+func (h *Handler) Create(c *gin.Context) {
+	var req request.TodoCreateRequest
+	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, response_util.ErrorResponse{
 			Status:  http.StatusText(http.StatusBadRequest),
 			Message: "title cannot be null",
@@ -20,13 +19,7 @@ func (h *Handler) Update(c *gin.Context) {
 		return
 	}
 
-	var req request.ActivityUpdateRequest
-	if err := c.ShouldBind(&req); err != nil {
-		_ = c.Error(err).SetType(gin.ErrorTypeBind)
-		return
-	}
-
-	activitieM, err := h.activityUsecase.Update(activityID, req)
+	todoM, err := h.todoUsecase.Create(req)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, response_util.ErrorResponse{
 			Status:  http.StatusText(http.StatusUnprocessableEntity),
@@ -38,6 +31,6 @@ func (h *Handler) Update(c *gin.Context) {
 	c.JSON(http.StatusOK, response_util.ShowResponse{
 		Status:  "Success",
 		Message: "Success",
-		Data:    activitieM,
+		Data:    todoM,
 	})
 }

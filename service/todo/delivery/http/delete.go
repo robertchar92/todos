@@ -11,13 +11,13 @@ import (
 )
 
 func (h *Handler) Delete(c *gin.Context) {
-	activityID, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	todoID, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
 		_ = c.Error(errors.ErrUnprocessableEntity).SetType(gin.ErrorTypePublic)
 		return
 	}
 
-	err = h.activityUsecase.Delete(activityID)
+	err = h.todoUsecase.Delete(todoID)
 	if err != nil {
 		c.JSON(http.StatusNotFound, response_util.ErrorResponse{
 			Status:  http.StatusText(http.StatusNotFound),

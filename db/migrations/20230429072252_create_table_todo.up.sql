@@ -7,6 +7,5 @@ CREATE TABLE todos
     is_active TINYINT(1) NOT NULL Default true,
     created_at DateTime NOT NULL,
     updated_at DateTime NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (activity_group_id) REFERENCES activities(id)
+    PRIMARY KEY (id)
 )ENGINE = InnoDB;

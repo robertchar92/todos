@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"todo/lib/database_transaction"
-	"todo/lib/redis"
 	"todo/utils/validators"
 
 	"gorm.io/driver/mysql"
@@ -24,12 +23,15 @@ import (
 
 	activityHTTP "todo/service/activity/delivery/http"
 	activityModule "todo/service/activity/module"
+
+	todoHTTP "todo/service/todo/delivery/http"
+	todoModule "todo/service/todo/module"
 )
 
 type libs struct {
 	fx.Out
 
-	Redis              redis.Client
+	// Redis              redis.Client
 	TransactionManager database_transaction.Client
 }
 
@@ -38,6 +40,7 @@ type handlers struct {
 
 	// OhlcHandler *todoHTTP.Handler
 	ActivityHandler *activityHTTP.Handler
+	TodoHandler     *todoHTTP.Handler
 }
 
 func main() {
@@ -51,6 +54,7 @@ func main() {
 			initLibs,
 		),
 		activityModule.Module,
+		todoModule.Module,
 		fx.Invoke(
 			validators.NewValidator,
 			startServer,
@@ -67,6 +71,7 @@ func startServer(lc fx.Lifecycle, db *gorm.DB, handlers handlers) {
 
 	h := server.BuildHandler(m,
 		handlers.ActivityHandler,
+		handlers.TodoHandler,
 	)
 
 	s := &http.Server{
@@ -139,16 +144,16 @@ func setupDatabase() *gorm.DB {
 
 func initLibs(lc fx.Lifecycle, db *gorm.DB) libs {
 	l := libs{
-		Redis: redis.NewClient(redis.Credentials{
-			Host:     os.Getenv("REDIS_HOST"),
-			Port:     os.Getenv("REDIS_PORT"),
-			Password: os.Getenv("REDIS_PASSWORD"),
-		}, os.Getenv("APP_ENV")),
+		// Redis: redis.NewClient(redis.Credentials{
+		// 	Host:     os.Getenv("REDIS_HOST"),
+		// 	Port:     os.Getenv("REDIS_PORT"),
+		// 	Password: os.Getenv("REDIS_PASSWORD"),
+		// }, os.Getenv("APP_ENV")),
 		TransactionManager: database_transaction.New(db),
 	}
 	lc.Append(fx.Hook{
 		OnStop: func(ctx context.Context) error {
-			_ = l.Redis.Close()
+			// _ = l.Redis.Close()
 
 			return nil
 		},

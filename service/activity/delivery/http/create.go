@@ -12,7 +12,10 @@ import (
 func (h *Handler) Create(c *gin.Context) {
 	var req request.ActivityCreateRequest
 	if err := c.ShouldBind(&req); err != nil {
-		_ = c.Error(err).SetType(gin.ErrorTypeBind)
+		c.JSON(http.StatusBadRequest, response_util.ErrorResponse{
+			Status:  http.StatusText(http.StatusBadRequest),
+			Message: "title cannot be null",
+		})
 		return
 	}
 

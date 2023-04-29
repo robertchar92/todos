@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"todo/service/activity/delivery/http/request"
+	"todo/service/todo/delivery/http/request"
 	response_util "todo/utils/response_utils"
 
 	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) Update(c *gin.Context) {
-	activityID, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	todoID, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response_util.ErrorResponse{
 			Status:  http.StatusText(http.StatusBadRequest),
@@ -20,13 +20,13 @@ func (h *Handler) Update(c *gin.Context) {
 		return
 	}
 
-	var req request.ActivityUpdateRequest
+	var req request.TodoUpdateRequest
 	if err := c.ShouldBind(&req); err != nil {
 		_ = c.Error(err).SetType(gin.ErrorTypeBind)
 		return
 	}
 
-	activitieM, err := h.activityUsecase.Update(activityID, req)
+	activitieM, err := h.todoUsecase.Update(todoID, req)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, response_util.ErrorResponse{
 			Status:  http.StatusText(http.StatusUnprocessableEntity),
