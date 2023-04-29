@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  todo:
+    build:
+      context: .
+    ports:
+      - "7000:7000"
+    volumes:
+      - type: bind
+        source: ./.env
+        target: /go/src/todo/.env
+        read_only: true
+
+  redis-server:
+    image: "redis"
+    ports:
+      - "6379:6379"
+    privileged: true
