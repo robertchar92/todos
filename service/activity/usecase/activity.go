@@ -1,9 +1,17 @@
 package usecase
 
-import "todo/service/activity"
+import (
+	"todo/service/activity"
+)
 
-type ActivityUsecase struct{}
+type ActivityUsecase struct {
+	activityRepo activity.Repository
+}
 
-func New() activity.Usecase {
-	return &ActivityUsecase{}
+func New(
+	activityRepo activity.Repository,
+) activity.Usecase {
+	return &ActivityUsecase{
+		activityRepo: activityRepo,
+	}
 }

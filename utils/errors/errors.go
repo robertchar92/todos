@@ -8,12 +8,6 @@ import (
 )
 
 var (
-	// ErrTetapTenangTetapSemangat custom error on unexpected error
-	ErrTetapTenangTetapSemangat = CustomError{
-		Message:  "Tetap Tenang Tetap Semangat",
-		HTTPCode: http.StatusInternalServerError,
-	}
-
 	ErrBadRequest = CustomError{
 		Message:  "Bad Request",
 		HTTPCode: http.StatusBadRequest,
