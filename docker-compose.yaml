@@ -1,19 +1,43 @@
 version: '3.8'
 
 services:
+  db:
+    container_name: "todo_db"
+    platform: linux/x86_64
+    build:
+      context: .
+      dockerfile: db.Dockerfile
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DBNAME}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - todo-networks
   todo:
     build:
       context: .
+      dockerfile: api.Dockerfile
     ports:
-      - "7000:7000"
+      - "3030:${PORT}"
     volumes:
       - type: bind
         source: ./.env
         target: /go/src/todo/.env
         read_only: true
+    depends_on:
+      - db
+    networks:
+      - todo-networks
 
-  redis-server:
-    image: "redis"
-    ports:
-      - "6379:6379"
-    privileged: true
+networks:
+  todo-networks:
+    external: true
+volumes:
+  mysql_data:

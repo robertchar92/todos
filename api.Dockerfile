@@ -16,23 +16,10 @@ WORKDIR /go/src/todo
 
 # build executeable
 COPY . .
-RUN go mod tidy \
-    && go mod vendor \
-    && go build -o bin/todo app/main.go
+COPY ./entrypoint.sh /entrypoint.sh
 
+# wait-for-it requires bash, which alpine doesn't ship with by default. Use wait-for instead
+ADD https://raw.githubusercontent.com/eficode/wait-for/v2.1.0/wait-for /usr/local/bin/wait-for
+RUN chmod +rx /usr/local/bin/wait-for /entrypoint.sh
 
-
-# stage 1
-FROM golang:1.20.3-alpine AS run
-
-# set variables
-RUN export GOPATH=/go \
-    && export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
-
-COPY --from=build /go/src/todo /go/src/todo
-
-WORKDIR /go/src/todo
-
-RUN chmod +x bin/todo
-
-CMD ["bin/todo"]
+ENTRYPOINT [ "sh", "/entrypoint.sh" ]
