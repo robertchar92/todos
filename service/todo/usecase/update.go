@@ -13,18 +13,18 @@ func (u *TodoUsecase) Update(todoID uint64, request request.TodoUpdateRequest) (
 	todoM, err := u.todoRepo.FindByID(todoID)
 	if err != nil {
 		err := errors.ErrUnprocessableEntity
-		err.Message = fmt.Sprintf("Activity Group with ID %d Not Found", todoID)
+		err.Message = fmt.Sprintf("Todo with ID %d Not Found", todoID)
 
 		return nil, err
 	}
 
 	_ = copier.Copy(todoM, &request)
 
-	if *request.Priority != models.TodoPriorityVeryHigh &&
+	if (request.Priority != nil && (*request.Priority != models.TodoPriorityVeryHigh &&
 		*request.Priority != models.TodoPriorityHigh &&
 		*request.Priority != models.TodoPriorityMedium &&
 		*request.Priority != models.TodoPriorityLow &&
-		*request.Priority != models.TodoPriorityVeryLow {
+		*request.Priority != models.TodoPriorityVeryLow)) || request.Priority == nil {
 		todoM.Priority = models.TodoPriorityVeryHigh
 	}
 

@@ -26,11 +26,9 @@ func (h *Handler) Delete(c *gin.Context) {
 		return
 	}
 
-	var data interface{}
-
 	c.JSON(http.StatusOK, response_util.ShowResponse{
 		Status:  "Success",
 		Message: "Success",
-		Data:    data,
+		Data:    make(map[string]interface{}),
 	})
 }
