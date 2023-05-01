@@ -9,7 +9,7 @@ func (u *TodoUsecase) Delete(todoID uint64) error {
 	todoM, err := u.todoRepo.FindByID(todoID)
 	if err != nil {
 		err := errors.ErrUnprocessableEntity
-		err.Message = fmt.Sprintf("Todo with ID %d not found", todoID)
+		err.Message = fmt.Sprintf("Todo with ID %d Not Found", todoID)
 
 		return err
 	}

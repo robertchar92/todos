@@ -15,7 +15,7 @@ func (u *TodoUsecase) Index(paginationConfig request_util.PaginationConfig) ([]m
 	}
 
 	todos, err := u.todoRepo.FindAll(paginationConfig)
-	if err != nil || len(todos) == 0 {
+	if err != nil {
 
 		err := errors.ErrUnprocessableEntity
 		err.Message = "Todo items not found!"

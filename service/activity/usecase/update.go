@@ -13,7 +13,7 @@ func (u *ActivityUsecase) Update(activityID uint64, request request.ActivityUpda
 	activityM, err := u.activityRepo.FindByID(activityID)
 	if err != nil {
 		err := errors.ErrUnprocessableEntity
-		err.Message = fmt.Sprintf("Activity Group with ID %d Not Found", activityID)
+		err.Message = fmt.Sprintf("Activity with ID %d Not Found", activityID)
 
 		return nil, err
 	}

@@ -12,9 +12,19 @@ import (
 func (h *Handler) Create(c *gin.Context) {
 	var req request.TodoCreateRequest
 	if err := c.ShouldBind(&req); err != nil {
+		m := ""
+
+		if req.Title == "" {
+			m = "title cannot be null"
+		}
+
+		if req.ActivityGroupID == 0 {
+			m = "activity_group_id cannot be null"
+		}
+
 		c.JSON(http.StatusBadRequest, response_util.ErrorResponse{
 			Status:  http.StatusText(http.StatusBadRequest),
-			Message: "title cannot be null",
+			Message: m,
 		})
 		return
 	}

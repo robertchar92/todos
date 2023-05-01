@@ -15,21 +15,24 @@ func (h *Handler) Update(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, response_util.ErrorResponse{
 			Status:  http.StatusText(http.StatusBadRequest),
-			Message: "title cannot be null",
+			Message: "ID is not a valid",
 		})
 		return
 	}
 
 	var req request.ActivityUpdateRequest
 	if err := c.ShouldBind(&req); err != nil {
-		_ = c.Error(err).SetType(gin.ErrorTypeBind)
+		c.JSON(http.StatusBadRequest, response_util.ErrorResponse{
+			Status:  http.StatusText(http.StatusBadRequest),
+			Message: "title cannot be null",
+		})
 		return
 	}
 
 	activitieM, err := h.activityUsecase.Update(activityID, req)
 	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, response_util.ErrorResponse{
-			Status:  http.StatusText(http.StatusUnprocessableEntity),
+		c.JSON(http.StatusNotFound, response_util.ErrorResponse{
+			Status:  http.StatusText(http.StatusNotFound),
 			Message: fmt.Sprint(err),
 		})
 		return

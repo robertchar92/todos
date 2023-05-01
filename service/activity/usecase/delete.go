@@ -9,7 +9,7 @@ func (u *ActivityUsecase) Delete(activityID uint64) error {
 	activityM, err := u.activityRepo.FindByID(activityID)
 	if err != nil {
 		err := errors.ErrUnprocessableEntity
-		err.Message = fmt.Sprintf("Activity Group with ID %d not found", activityID)
+		err.Message = fmt.Sprintf("Activity with ID %d Not Found", activityID)
 
 		return err
 	}
