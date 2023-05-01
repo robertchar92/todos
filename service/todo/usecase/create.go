@@ -19,14 +19,13 @@ func (u *TodoUsecase) Create(request request.TodoCreateRequest) (*models.Todo, e
 	todoM := &models.Todo{
 		Title:           request.Title,
 		ActivityGroupID: request.ActivityGroupID,
-		Priority:        *request.Priority,
 	}
 
-	if todoM.Priority != models.TodoPriorityVeryHigh &&
-		todoM.Priority != models.TodoPriorityHigh &&
-		todoM.Priority != models.TodoPriorityMedium &&
-		todoM.Priority != models.TodoPriorityLow &&
-		todoM.Priority != models.TodoPriorityVeryLow {
+	if request.Priority != nil && (*request.Priority != models.TodoPriorityVeryHigh &&
+		*request.Priority != models.TodoPriorityHigh &&
+		*request.Priority != models.TodoPriorityMedium &&
+		*request.Priority != models.TodoPriorityLow &&
+		*request.Priority != models.TodoPriorityVeryLow) {
 		todoM.Priority = models.TodoPriorityVeryHigh
 	}
 

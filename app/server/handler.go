@@ -10,12 +10,10 @@ import (
 	"todo/app/middleware"
 	"todo/utils/validators"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // All handler that need to be registered MUST implement this interface
@@ -47,42 +45,42 @@ func BuildHandler(middleware *middleware.Middleware, handlers ...Handler) http.H
 	}
 
 	// apply global middleware here
-	config := cors.Config{
-		//AllowOrigins: strings.Split(os.Getenv("CORS_ALLOWED_ORIGINS"), ","),
-		//AllowWebSockets:  true,
-		//AllowCredentials: true,
-		AllowAllOrigins: true,
-		AllowWildcard:   true,
-		AllowHeaders: []string{
-			"Accept",
-			"Accept-Encoding",
-			"Bearer",
-			"Connection",
-			"Cookie",
-			"Content-Length",
-			"Content-Type",
-			"Origin",
-			"Authorization",
-			"X-Forwarded-For",
-			"X-Real-Ip",
-			"User-Agent",
-			"Lang",
-			"Version",
-			"Access-Control-Request-Method",
-			"Access-Control-Request-Headers",
-			"Access-Control-Allow-Origin",
-		},
-		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
-	}
+	// config := cors.Config{
+	// 	//AllowOrigins: strings.Split(os.Getenv("CORS_ALLOWED_ORIGINS"), ","),
+	// 	//AllowWebSockets:  true,
+	// 	//AllowCredentials: true,
+	// 	AllowAllOrigins: true,
+	// 	AllowWildcard:   true,
+	// 	AllowHeaders: []string{
+	// 		"Accept",
+	// 		"Accept-Encoding",
+	// 		"Bearer",
+	// 		"Connection",
+	// 		"Cookie",
+	// 		"Content-Length",
+	// 		"Content-Type",
+	// 		"Origin",
+	// 		"Authorization",
+	// 		"X-Forwarded-For",
+	// 		"X-Real-Ip",
+	// 		"User-Agent",
+	// 		"Lang",
+	// 		"Version",
+	// 		"Access-Control-Request-Method",
+	// 		"Access-Control-Request-Headers",
+	// 		"Access-Control-Allow-Origin",
+	// 	},
+	// 	AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
+	// }
 
-	router.Use(cors.New(config))
+	// router.Use(cors.New(config))
 	router.Use(middleware.ErrorHandle())
 
 	// set max upload file size
 	//router.MaxMultipartMemory = 8 << 20  // 8 MiB
 
-	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
-	router.GET("/healthz", healthz)
+	// router.GET("/metrics", gin.WrapH(promhttp.Handler()))
+	// router.GET("/healthz", healthz)
 	// serverRoute := router.Group("/server", middleware.BasicHandle())
 	// {
 	// 	serverRoute.GET("/err_test", errTest)

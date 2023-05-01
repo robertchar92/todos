@@ -22,7 +22,7 @@ func (h *Handler) Register(r *gin.Engine, m *middleware.Middleware) {
 	{
 		route.GET("", h.Index)
 		route.GET("/:id", h.Show)
-		route.POST("/", h.Create)
+		route.POST("", h.Create)
 		route.PATCH("/:id", h.Update)
 		route.DELETE("/:id", h.Delete)
 	}

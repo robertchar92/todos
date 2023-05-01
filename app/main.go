@@ -75,7 +75,7 @@ func startServer(lc fx.Lifecycle, db *gorm.DB, handlers handlers) {
 	)
 
 	s := &http.Server{
-		Addr:         fmt.Sprintf(":%s", os.Getenv("PORT")),
+		Addr:         ":3030",
 		Handler:      h,
 		ReadTimeout:  300 * time.Second,
 		WriteTimeout: 10 * time.Second,
@@ -110,11 +110,11 @@ func loadEnv() {
 func setupDatabase() *gorm.DB {
 	dsn := fmt.Sprintf(
 		"%s:%s@(%s:%s)/%s?charset=utf8mb4&collation=utf8mb4_unicode_ci&parseTime=true",
-		os.Getenv("DATABASE_USERNAME"),
-		os.Getenv("DATABASE_PASSWORD"),
-		os.Getenv("DATABASE_HOST"),
-		os.Getenv("DATABASE_PORT"),
-		os.Getenv("DATABASE_NAME"),
+		os.Getenv("MYSQL_USER"),
+		os.Getenv("MYSQL_PASSWORD"),
+		os.Getenv("MYSQL_HOST"),
+		os.Getenv("MYSQL_PORT"),
+		os.Getenv("MYSQL_DBNAME"),
 	)
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{

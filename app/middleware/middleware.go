@@ -45,56 +45,6 @@ func (m *Middleware) AuthHandle() gin.HandlerFunc {
 	return authMiddleware.MiddlewareFunc()
 }
 
-// func (m *Middleware) AdminHandle() gin.HandlerFunc {
-// 	return func(c *gin.Context) {
-// 		claims := jwt.ExtractClaims(c)
-// 		role := fmt.Sprint(claims["role"])
-// 		if role != models.RoleNameAdmin {
-// 			err := errors.ErrForbidden
-// 			c.AbortWithStatusJSON(err.HTTPCode, gin.H{"errors": err.Message})
-// 			return
-// 		}
-// 		c.Next()
-// 	}
-// }
-
-// func (m *Middleware) BasicHandle() gin.HandlerFunc {
-// 	return gin.BasicAuth(gin.Accounts{
-// 		os.Getenv("BASIC_USERNAME"): os.Getenv("BASIC_PASSWORD"),
-// 	})
-// }
-
-// func (m *Middleware) BasicMLHandle() gin.HandlerFunc {
-// 	return gin.BasicAuth(gin.Accounts{
-// 		os.Getenv("BASIC_ML_USERNAME"): os.Getenv("BASIC_ML_PASSWORD"),
-// 	})
-// }
-
-// func (m *Middleware) UserHandle() gin.HandlerFunc {
-// 	return func(c *gin.Context) {
-// 		claims := jwt.ExtractClaims(c)
-// 		role := fmt.Sprint(claims["role"])
-// 		if role != models.RoleNameUser {
-// 			err := errors.ErrForbidden
-// 			c.AbortWithStatusJSON(err.HTTPCode, gin.H{"errors": err.Message})
-// 			return
-// 		}
-
-// 		// check version
-// 		clientVersion, _ := strconv.ParseFloat(c.GetHeader("Version"), 64)
-// 		requiredVersion, _ := strconv.ParseFloat(os.Getenv("APP_VERSION"), 64)
-
-// 		if clientVersion < requiredVersion {
-// 			err := errors.ErrBadRequest
-// 			err.Message = "please update your apps to newer version"
-// 			c.AbortWithStatusJSON(err.HTTPCode, gin.H{"errors": err.Message})
-// 			return
-// 		}
-
-// 		c.Next()
-// 	}
-// }
-
 func (m *Middleware) VersionHandle() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// check version

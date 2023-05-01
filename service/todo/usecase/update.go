@@ -20,11 +20,11 @@ func (u *TodoUsecase) Update(todoID uint64, request request.TodoUpdateRequest) (
 
 	_ = copier.Copy(todoM, &request)
 
-	if todoM.Priority != models.TodoPriorityVeryHigh &&
-		todoM.Priority != models.TodoPriorityHigh &&
-		todoM.Priority != models.TodoPriorityMedium &&
-		todoM.Priority != models.TodoPriorityLow &&
-		todoM.Priority != models.TodoPriorityVeryLow {
+	if request.Priority != nil && (*request.Priority != models.TodoPriorityVeryHigh &&
+		*request.Priority != models.TodoPriorityHigh &&
+		*request.Priority != models.TodoPriorityMedium &&
+		*request.Priority != models.TodoPriorityLow &&
+		*request.Priority != models.TodoPriorityVeryLow) {
 		todoM.Priority = models.TodoPriorityVeryHigh
 	}
 

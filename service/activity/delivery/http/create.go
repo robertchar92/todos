@@ -28,7 +28,7 @@ func (h *Handler) Create(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, response_util.ShowResponse{
+	c.JSON(http.StatusCreated, response_util.ShowResponse{
 		Status:  "Success",
 		Message: "Success",
 		Data:    activitieM,
